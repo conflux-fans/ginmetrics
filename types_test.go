@@ -8,8 +8,8 @@ import (
 )
 
 func TestCounterMetrics(t *testing.T) {
-	metrics.Enabled = true
+	metrics.Enable()
 	r := metrics.NewRegistry()
 	metrics.GetOrRegisterCounter("counte_metrics", r).Inc(10)
-	assert.Equal(t, metrics.GetOrRegisterCounter("counte_metrics", r).Count(), int64(10))
+	assert.Equal(t, metrics.GetOrRegisterCounter("counte_metrics", r).Snapshot().Count(), int64(10))
 }

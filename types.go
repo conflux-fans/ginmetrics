@@ -30,7 +30,7 @@ type Monitor struct {
 func GetMonitor() *Monitor {
 	if monitor == nil {
 		once.Do(func() {
-			metrics.Enabled = true
+			metrics.Enable()
 			monitor = &Monitor{
 				slowTime: defaultSlowTime,
 				registry: metrics.NewRegistry(),
@@ -59,19 +59,19 @@ func (m *Monitor) ReportToLogger(freq time.Duration, l metrics.Logger) {
 	go metrics.Log(m.registry, freq, l)
 }
 
-func (m *Monitor) GetOrRegisterCounter(name string) metrics.Counter {
+func (m *Monitor) GetOrRegisterCounter(name string) *metrics.Counter {
 	return metrics.GetOrRegisterCounter(name, m.registry)
 }
 
-func (m *Monitor) GetOrRegisterGauge(name string) metrics.Gauge {
+func (m *Monitor) GetOrRegisterGauge(name string) *metrics.Gauge {
 	return metrics.GetOrRegisterGauge(name, m.registry)
 }
 
-func (m *Monitor) GetOrRegisterGaugeFloat64(name string) metrics.GaugeFloat64 {
+func (m *Monitor) GetOrRegisterGaugeFloat64(name string) *metrics.GaugeFloat64 {
 	return metrics.GetOrRegisterGaugeFloat64(name, m.registry)
 }
 
-func (m *Monitor) GetOrRegisterMeter(name string) metrics.Meter {
+func (m *Monitor) GetOrRegisterMeter(name string) *metrics.Meter {
 	return metrics.GetOrRegisterMeter(name, m.registry)
 }
 
@@ -79,6 +79,6 @@ func (m *Monitor) GetOrRegisterHistogram(name string) metrics.Histogram {
 	return metrics.GetOrRegisterHistogram(name, m.registry, metrics.NewExpDecaySample(1028, 0.015))
 }
 
-func (m *Monitor) GetOrRegisterTimer(name string) metrics.Timer {
+func (m *Monitor) GetOrRegisterTimer(name string) *metrics.Timer {
 	return metrics.GetOrRegisterTimer(name, m.registry)
 }
